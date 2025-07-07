@@ -41,8 +41,12 @@ int ocl_init(int requested) {
     }
     err = clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, 1, &device, &num);
     if(err != CL_SUCCESS) {
-        fprintf(stderr, "[E] No OpenCL GPU device found\n");
-        return 0;
+        fprintf(stderr, "[W] No OpenCL GPU device found, trying CPU\n");
+        err = clGetDeviceIDs(platform, CL_DEVICE_TYPE_CPU, 1, &device, &num);
+        if(err != CL_SUCCESS) {
+            fprintf(stderr, "[E] No suitable OpenCL device found\n");
+            return 0;
+        }
     }
     cl_uint cu;
     clGetDeviceInfo(device, CL_DEVICE_MAX_COMPUTE_UNITS, sizeof(cu), &cu, NULL);
