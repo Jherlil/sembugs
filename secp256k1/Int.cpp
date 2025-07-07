@@ -999,9 +999,13 @@ void  Int::SetBaseN(int n,const char *charset,const char *value) {
   Int c;
   int lgth = (int)strlen(value);
   for(int i=lgth-1;i>=0;i--) {
-    char *p = strchr((char*)charset,toupper(value[i]));
+    int ch = (unsigned char)value[i];
+    if(isspace(ch) || ch=='\r')
+      continue;
+    ch = toupper(ch);
+    char *p = strchr((char*)charset,ch);
     if(!p) {
-		printf("Invalid charset !!\n");
+      printf("Invalid charset !!\n");
       return;
     }
     int id = (int)(p-charset);
