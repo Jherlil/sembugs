@@ -1,0 +1,43 @@
+  GNU nano 8.5                                                                                                                    fix-build.patch
+diff --git a/keyhunt.cpp b/keyhunt.cpp
+index 4b9e2c1..c8e0a7e 100644
+--- a/keyhunt.cpp
++++ b/keyhunt.cpp
+@@ -2655,6 +2655,9 @@ void  banner()
+     printf("=================================================\n");
+ }
+
+ /* ------------------------------------------------------------ */
++/*  ⚠️  BUG: o bloco acima ( banner / init … ) termina aqui.
++ *  Faltava uma chave de fechamento; sem ela, todo o código que
++ *  segue ficou fora de qualquer função → erros de “expected …”. */
++}  /* ← fecha escopo anterior corretamente                      */
+
+ int main(int argc , char **argv) {
+@@ -2670,6 +2673,8 @@ int main(int argc , char **argv) {
+
+ /* ---------------------------------------------------------------- */
+ /*  —–––  bloco principal de procura  ––––                           */
+
++        int j = 0;               /* ← era usado mas não declarado    */
++
+         if(FLAGMODE != MODE_BSGS){
+                 /*… resto do seu código - não mexemos …*/
+@@ -2824,6 +2829,9 @@ int main(int argc , char **argv) {
+                 CloseHandle(write_random);
+                 CloseHandle(bsgs_thread);
+         }
++
++        return 0;                /* boa prática no final do main()   */
+ }
++
+ /* **************************************************************** */
+
+
+
+
+
+
+
+
+
