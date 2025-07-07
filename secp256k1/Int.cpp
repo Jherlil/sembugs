@@ -925,7 +925,14 @@ void Int::SetBase10(const char *value) {
   Int c;
   int lgth = (int)strlen(value);
   for(int i=lgth-1;i>=0;i--) {
-    uint32_t id = (uint32_t)(value[i]-'0');
+    int ch = (unsigned char)value[i];
+    if(isspace(ch) || ch=='\r')
+      continue;
+    if(ch < '0' || ch > '9') {
+      printf("Invalid digit in decimal string!\n");
+      return;
+    }
+    uint32_t id = (uint32_t)(ch - '0');
     c.Set(&pw);
     c.Mult(id);
     Add(&c);
