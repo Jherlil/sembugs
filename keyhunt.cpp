@@ -409,6 +409,7 @@ static bool load_checkpoint(Int &val) {
         return false;
     }
     fclose(f);
+    trim(buf, " \t\n\r");
     val.SetBase16(buf);
     return true;
 }
